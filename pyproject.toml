@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "mindmeet-padb"
+version = "0.1.0"
+description = ""
+authors = ["Jackson Serafim <jacksonvieiira12@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+psycopg = "^3.1.12"
+pytest = "^7.4.2"
+fastapi = "^0.104.0"
+uvicorn = "^0.23.2"
+python-decouple = "^3.8"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
