@@ -1,4 +1,4 @@
-from app.schemas.appoiment import Appoiment, AppoimentOutput, AppomeintInput
+from app.schemas.appoiment import Appoiment, AppoimentCreate, AppoimentOutput
 
 
 def test_appoiment():
@@ -15,7 +15,7 @@ def test_appoiment():
     assert appoiment.anonymous
 
 def test_appoiment_input():
-    appoiment = AppomeintInput(
+    appoiment = AppoimentCreate(
         agenda_day_hour_id=1,
         psychologist_id=1,
         patient_id=1,
