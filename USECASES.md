@@ -10,14 +10,20 @@ Abstrair fazer 2 usuarios fakes
 
 ## Agendamentos
 
-- Criar um Agendamento
+- Criar um Agendamento OK
 {
     day_hour_id,
-    end_time,
-    nome
+    psycologist_id,
+    patient_id,
+    reason
 }
 
-- Editar um agendamento (data de inicio, data de fim, situacao, nome)
+- Excluir um agendamento OK
+{
+    id
+}
+
+- Editar um agendamento (data de inicio, data de fim, situacao, nome) OK
 {
     day_hour_id,
     situation,
@@ -25,12 +31,8 @@ Abstrair fazer 2 usuarios fakes
     description
 }
 
-- Excluir um agendamento 
-{
-    id
-}
 
-- Pegar um agendamento por id
+- Pegar um agendamento por id OK
 /agendamentos/<id>
 
 - Filtrar agendamento por uma data
