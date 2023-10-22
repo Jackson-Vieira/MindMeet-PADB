@@ -17,3 +17,9 @@ class AppoimentOutput(Appoiment):
     agenda_day_hour_id: int
     psychologist_id: int
     patient_id: int
+
+class AppoimentRequest(BaseModel):
+    agenda_day_hour_id: int
+    psychologist_id: int
+    patient_id: int
+    reason: str
