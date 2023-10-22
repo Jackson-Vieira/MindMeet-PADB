@@ -33,5 +33,5 @@ class AppoimentOutput(Appoiment):
 class AppoimentRequest(BaseModel):
     agenda_day_hour_id: int
     reason: str
-    # psychologist_id: int
-    # patient_id: int
+    status: bool
+    anonymous: bool
