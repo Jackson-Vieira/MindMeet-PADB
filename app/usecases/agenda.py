@@ -16,7 +16,7 @@ class AgendaUseCases(BaseUseCase):
     def get_agenda_by_id(self, id: int) -> AgendaOutput:
         with self.db_connection.cursor() as cursor:
             cursor.execute(SELECT_AGENDA_SQL, {"id": id})
-            agenda = self.cursor.fetchone() 
+            agenda = cursor.fetchone() 
             return AgendaOutput(id=agenda[0], start_datetime=agenda[1], end_datetime=agenda[2])
 
     def get_all_agendas(self) -> list[Agenda]:

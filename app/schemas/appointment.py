@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+import datetime
 
 """
 # id SERIAL PRIMARY KEY,
@@ -38,6 +39,6 @@ class AppointmentRequestCreate(AppointmentRequest):
     pass
 
 class AppointmentRequestOutput(AppointmentRequest):
-    id: str
-    created_at: str
-    updated_at: str
+    id: int
+    created_at: datetime.datetime
+    updated_at: datetime.datetime

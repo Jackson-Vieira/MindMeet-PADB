@@ -5,9 +5,9 @@ from app.schemas.appointment import (
 
 from .base import BaseUseCase
 
-CREATE_REQUEST_APPOINTMENT_SQL = "INSERT INTO requests_appointments (agenda_day_hour_id, status, reason) VALUES (%(agenda_day_hour_id)s, %(status)s, %(reason)s), %(anonymous)s"
+CREATE_REQUEST_APPOINTMENT_SQL = "INSERT INTO requests_appointments (agenda_day_hour_id, status, reason) VALUES (%(agenda_day_hour_id)s, %(status)s, %(reason)s)"
 DELETE_REQUEST_APPOINTMENT_SQL = "DELETE FROM requests_appointments WHERE id = %(id)s"
-SELECT_ALL_REQUESTS_APPOINTMENTS_SQL = "SELECT (id, agenda_day_hour_id, status, reason, created_at, updated_at) FROM requests_appointments"
+SELECT_ALL_REQUESTS_APPOINTMENTS_SQL = "SELECT id, agenda_day_hour_id, status, reason, created_at, updated_at FROM requests_appointments"
 
 class RequestAppointmentUseCases(BaseUseCase):
     def get_all_requests_appointments(self) -> list[AppointmentRequestOutput]:
