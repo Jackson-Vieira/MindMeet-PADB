@@ -13,7 +13,7 @@ class AppointmentUseCases(BaseUseCase):
     def get_all_appointments(self) -> list[AppointmentOutput]:
         with self.db_connection.cursor() as cursor:
             cursor.execute(SELECT_ALL_APPOINTMENTS_SQL)
-            appointment = self.cursor.fetchall()
+            appointment = cursor.fetchall()
             return [AppointmentOutput(
                 id=appoiment[0],
                 agenda_day_hour_id=appoiment[1],
@@ -28,7 +28,7 @@ class AppointmentUseCases(BaseUseCase):
     def get_appointments_by_id(self, id: int) -> AppointmentOutput:
         with self.db_connection.cursor() as cursor:
             cursor.execute(SELECT_APPOINTMENT_SQL, {"id": id})
-            appoiment = self.cursor.fetchone()
+            appoiment = cursor.fetchone()
             return AppointmentOutput(
                 id=appoiment[0],
                 agenda_day_hour_id=appoiment[1],
