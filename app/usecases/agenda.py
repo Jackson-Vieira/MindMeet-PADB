@@ -1,7 +1,7 @@
 from psycopg import Connection
 
 from app.schemas.agenda import Agenda, AgendaOutput
-from app.schemas.appointment import AppoimentRequest
+from app.schemas.appointment import AppointmentRequest
 
 # make appoiment create sql and update sql
 CREATE_AGENDA_SQL = "INSERT INTO agenda DEFAULT VALUES"
@@ -40,7 +40,7 @@ class AgendaUseCases:
         agendas = self.cursor.fetchall()
         return [AgendaOutput(id=agenda[0], start_datetime=agenda[1], end_datetime=agenda[2]) for agenda in agendas]
     
-    def create_request_appointment(self, appoiment_request: AppoimentRequest) -> None:
+    def create_request_appointment(self, appoiment_request: AppointmentRequest) -> None:
         self.cursor.execute(CREATE_REQUEST_APPOINTMENT_SQL, appoiment_request.model_dump())
         self.db_connection.commit()
     

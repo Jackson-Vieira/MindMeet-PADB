@@ -1,6 +1,8 @@
+from datetime import datetime
+
 from psycopg import Connection
 
-from app.schemas.appointment import AppoimentCreate, AppoimentOutput
+from app.schemas.appointment import AppointmentCreate, AppointmentOutput
 
 # make appoiment create sql and update sql
 CREATE_APPOINTMENT_SQL = "INSERT INTO appointments (status, reason, anonymous, agenda_day_hour_id) VALUES (%(status)s, %(reason)s, %(anonymous)s, %(agenda_day_hour_id)s)"
@@ -14,10 +16,10 @@ class AppointmentUseCases:
         self.db_connection = db_connection
         self.cursor = self.db_connection.cursor()
 
-    def get_all_appointments(self) -> list[AppoimentOutput]:
+    def get_all_appointments(self) -> list[AppointmentOutput]:
         self.cursor.execute(SELECT_ALL_APPOINTMENTS_SQL)
         appointment = self.cursor.fetchall()
-        return [AppoimentOutput(
+        return [AppointmentOutput(
             id=appoiment[0],
             agenda_day_hour_id=appoiment[1],
             status=appoiment[2],
@@ -28,10 +30,10 @@ class AppointmentUseCases:
         for appoiment in appointment]
 
     
-    def get_appointments_by_id(self, id: int) -> AppoimentOutput:
+    def get_appointments_by_id(self, id: int) -> AppointmentOutput:
         self.cursor.execute(SELECT_APPOINTMENT_SQL, {"id": id})
         appoiment = self.cursor.fetchone()
-        return AppoimentOutput(
+        return AppointmentOutput(
             id=appoiment[0],
             agenda_day_hour_id=appoiment[1],
             status=appoiment[2],
@@ -41,7 +43,7 @@ class AppointmentUseCases:
             updated_at=appoiment[6],
         )
 
-    def create_appointment(self, appointment: AppoimentCreate) -> None:
+    def create_appointment(self, appointment: AppointmentCreate) -> None:
         self.cursor.execute(CREATE_APPOINTMENT_SQL, appointment.model_dump())
         self.db_connection.commit()
 
@@ -49,6 +51,7 @@ class AppointmentUseCases:
         self.cursor.execute(DELETE_APPOINTMENT_SQL, {"id": id})
         self.db_connection.commit()
 
-    def update_appointment(self, appointment: AppoimentCreate) -> None:
+    def update_appointment(self, appointment: AppointmentCreate) -> None:
+        appointment.updated_at = datetime.now() # maybe this is not the best way to do it
         self.cursor.execute(UPDATE_APPOINTMENT_SQL, appointment.model_dump())
         self.db_connection.commit()
