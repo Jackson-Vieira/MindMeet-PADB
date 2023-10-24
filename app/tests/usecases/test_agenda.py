@@ -1,6 +1,5 @@
-import logging
 
-from app.schemas.agenda import Agenda, AgendaDayHour, AgendaOutput
+from app.schemas.agenda import Agenda, AgendaOutput
 from app.usecases.agenda import (
     DELETE_AGENDA_SQL,
     SELECT_ALL_AGENDAS_SQL,
