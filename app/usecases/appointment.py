@@ -1,37 +1,54 @@
 from psycopg import Connection
 
-from app.schemas.appoiment import AppoimentCreate, AppoimentOutput
+from app.schemas.appointment import AppoimentCreate, AppoimentOutput
 
 # make appoiment create sql and update sql
 CREATE_APPOINTMENT_SQL = "INSERT INTO appointments (status, reason, anonymous, agenda_day_hour_id) VALUES (%(status)s, %(reason)s, %(anonymous)s, %(agenda_day_hour_id)s)"
 UPDATE_APPOINTMENT_SQL = "UPDATE appointments SET status = %(status)s, reason = %(reason)s, anonymous = %(anonymous)s, agenda_day_hour_id = %(agenda_day_hour_id)s WHERE id = %(id)s"
-SELECT_ALL_APPOINTMENTS_SQL = "SELECT * FROM appoiments"
-SELECT_APPOINTMENT_SQL = "SELECT * FROM appoiments WHERE id = %(id)s"
-DELETE_APPOINTMENT_SQL = "DELETE FROM appoiments WHERE id = %(id)s"
+SELECT_ALL_APPOINTMENTS_SQL = "SELECT (id, agenda_day_hour_id, status, reason, anonymous, created_at, updated_at) FROM appointments"
+SELECT_APPOINTMENT_SQL = "SELECT (id, agenda_day_hour, status, reason, anonymous, created_at, updated_at) FROM appointments WHERE id = %(id)s"
+DELETE_APPOINTMENT_SQL = "DELETE FROM appointments WHERE id = %(id)s"
 
 class AppointmentUseCases:
     def __init__(self, db_connection: Connection) -> None:
         self.db_connection = db_connection
         self.cursor = self.db_connection.cursor()
 
-    def get_all_appoiments(self) -> list[AppoimentOutput]:
+    def get_all_appointments(self) -> list[AppoimentOutput]:
         self.cursor.execute(SELECT_ALL_APPOINTMENTS_SQL)
-        appoiments = self.cursor.fetchall()
-        return appoiments
+        appointment = self.cursor.fetchall()
+        return [AppoimentOutput(
+            id=appoiment[0],
+            agenda_day_hour_id=appoiment[1],
+            status=appoiment[2],
+            reason=appoiment[3],
+            anonymous=appoiment[4],
+            created_at=appoiment[5],
+            updated_at=appoiment[6])
+        for appoiment in appointment]
+
     
-    def get_appoiment_by_id(self, id: int) -> AppoimentOutput:
+    def get_appointments_by_id(self, id: int) -> AppoimentOutput:
         self.cursor.execute(SELECT_APPOINTMENT_SQL, {"id": id})
         appoiment = self.cursor.fetchone()
-        return appoiment
+        return AppoimentOutput(
+            id=appoiment[0],
+            agenda_day_hour_id=appoiment[1],
+            status=appoiment[2],
+            reason=appoiment[3],
+            anonymous=appoiment[4],
+            created_at=appoiment[5],
+            updated_at=appoiment[6],
+        )
 
-    def create_appoiment(self, appoiment: AppoimentCreate) -> None:
-        self.cursor.execute(CREATE_APPOINTMENT_SQL, appoiment.model_dump())
+    def create_appointment(self, appointment: AppoimentCreate) -> None:
+        self.cursor.execute(CREATE_APPOINTMENT_SQL, appointment.model_dump())
         self.db_connection.commit()
 
-    def delete_appoiment(self, id: int) -> None:
+    def delete_appointment(self, id: int) -> None:
         self.cursor.execute(DELETE_APPOINTMENT_SQL, {"id": id})
         self.db_connection.commit()
 
-    def update_appoiment(self, appoiment: AppoimentCreate) -> None:
-        self.cursor.execute(UPDATE_APPOINTMENT_SQL, appoiment.model_dump())
+    def update_appointment(self, appointment: AppoimentCreate) -> None:
+        self.cursor.execute(UPDATE_APPOINTMENT_SQL, appointment.model_dump())
         self.db_connection.commit()

@@ -2,6 +2,7 @@ from fastapi import FastAPI
 
 from app.database.connection import start_db
 from app.routes.agenda import router as agenda_router
+from app.routes.appointment import router as appointments_router
 from app.routes.users import router as users_router
 
 app = FastAPI()
@@ -13,3 +14,4 @@ async def get_health_status():
 
 app.include_router(users_router)
 app.include_router(agenda_router)
+app.include_router(appointments_router)

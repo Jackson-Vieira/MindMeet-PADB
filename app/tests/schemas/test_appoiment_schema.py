@@ -1,4 +1,4 @@
-from app.schemas.appoiment import Appoiment, AppoimentCreate, AppoimentOutput
+from app.schemas.appointment import Appoiment, AppoimentCreate, AppoimentOutput
 
 
 def test_appoiment():
