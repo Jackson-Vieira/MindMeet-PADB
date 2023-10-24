@@ -4,7 +4,8 @@ from app.database.connection import start_db
 from app.routes.agenda import router as agenda_router
 from app.routes.appointment import router as appointments_router
 from app.routes.request_appointment import router as requests_appointment_router
-from app.routes.users import router as users_router
+
+# from app.routes.users import router as users_router
 
 app = FastAPI()
 start_db()

@@ -3,10 +3,10 @@ from app.schemas.appointment import AppointmentCreate, AppointmentOutput
 
 from .base import BaseUseCase
 
-CREATE_APPOINTMENT_SQL = "INSERT INTO appointments (status, reason, anonymous, agenda_day_hour_id) VALUES (%(status)s, %(reason)s, %(anonymous)s, %(agenda_day_hour_id)s)"
-UPDATE_APPOINTMENT_SQL = "UPDATE appointments SET status = %(status)s, reason = %(reason)s, anonymous = %(anonymous)s, agenda_day_hour_id = %(agenda_day_hour_id)s WHERE id = %(id)s"
-SELECT_ALL_APPOINTMENTS_SQL = "SELECT id, agenda_day_hour_id, status, reason, anonymous, created_at, updated_at FROM appointments"
-SELECT_APPOINTMENT_SQL = "SELECT id, agenda_day_hour, status, reason, anonymous, created_at, updated_at FROM appointments WHERE id = %(id)s"
+CREATE_APPOINTMENT_SQL = "INSERT INTO appointments (status, reason, agenda_day_hour_id) VALUES (%(status)s, %(reason)s, %(agenda_day_hour_id)s)"
+UPDATE_APPOINTMENT_SQL = "UPDATE appointments SET status = %(status)s, reason = %(reason)s, agenda_day_hour_id = %(agenda_day_hour_id)s WHERE id = %(id)s"
+SELECT_ALL_APPOINTMENTS_SQL = "SELECT id, agenda_day_hour_id, status, reason, created_at, updated_at FROM appointments"
+SELECT_APPOINTMENT_SQL = "SELECT id, agenda_day_hour, status, reason, created_at, updated_at FROM appointments WHERE id = %(id)s"
 DELETE_APPOINTMENT_SQL = "DELETE FROM appointments WHERE id = %(id)s"
 
 class AppointmentUseCases(BaseUseCase):
@@ -19,9 +19,8 @@ class AppointmentUseCases(BaseUseCase):
                 agenda_day_hour_id=appoiment[1],
                 status=appoiment[2],
                 reason=appoiment[3],
-                anonymous=appoiment[4],
-                created_at=appoiment[5],
-                updated_at=appoiment[6])
+                created_at=appoiment[4],
+                updated_at=appoiment[5])
             for appoiment in appointment]
 
     
@@ -34,9 +33,8 @@ class AppointmentUseCases(BaseUseCase):
                 agenda_day_hour_id=appoiment[1],
                 status=appoiment[2],
                 reason=appoiment[3],
-                anonymous=appoiment[4],
-                created_at=appoiment[5],
-                updated_at=appoiment[6],
+                created_at=appoiment[4],
+                updated_at=appoiment[5],
             )
 
     def create_appointment(self, appointment: AppointmentCreate) -> None:
