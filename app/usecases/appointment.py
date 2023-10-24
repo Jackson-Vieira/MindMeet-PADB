@@ -1,10 +1,9 @@
-from datetime import datetime
+# from datetime import datetime
 
 from psycopg import Connection
 
 from app.schemas.appointment import AppointmentCreate, AppointmentOutput
 
-# make appoiment create sql and update sql
 CREATE_APPOINTMENT_SQL = "INSERT INTO appointments (status, reason, anonymous, agenda_day_hour_id) VALUES (%(status)s, %(reason)s, %(anonymous)s, %(agenda_day_hour_id)s)"
 UPDATE_APPOINTMENT_SQL = "UPDATE appointments SET status = %(status)s, reason = %(reason)s, anonymous = %(anonymous)s, agenda_day_hour_id = %(agenda_day_hour_id)s WHERE id = %(id)s"
 SELECT_ALL_APPOINTMENTS_SQL = "SELECT (id, agenda_day_hour_id, status, reason, anonymous, created_at, updated_at) FROM appointments"
@@ -14,6 +13,7 @@ DELETE_APPOINTMENT_SQL = "DELETE FROM appointments WHERE id = %(id)s"
 class AppointmentUseCases:
     def __init__(self, db_connection: Connection) -> None:
         self.db_connection = db_connection
+        # TODO: make a generator to get the cursor and close it after the use
         self.cursor = self.db_connection.cursor()
 
     def get_all_appointments(self) -> list[AppointmentOutput]:
@@ -51,7 +51,8 @@ class AppointmentUseCases:
         self.cursor.execute(DELETE_APPOINTMENT_SQL, {"id": id})
         self.db_connection.commit()
 
+    # TODO: improve this
     def update_appointment(self, appointment: AppointmentCreate) -> None:
-        appointment.updated_at = datetime.now() # maybe this is not the best way to do it
+        # appointment.updated_at = datetime.now() # maybe this is not the best way to do it
         self.cursor.execute(UPDATE_APPOINTMENT_SQL, appointment.model_dump())
         self.db_connection.commit()
