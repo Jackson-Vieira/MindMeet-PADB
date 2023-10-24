@@ -7,7 +7,7 @@ from app.schemas.appointment import AppointmentRequestCreate
 # from app.schemas.appointment import AppointmentRequestCreate, AppointmentRequestOutput
 from app.usecases.request_appointment import RequestAppointmentUseCases
 
-router = APIRouter(prefix="/request-appointments")
+router = APIRouter(tags=["Request Appointments"], prefix="/request-appointments")
 
 @router.get('')
 def list_all(

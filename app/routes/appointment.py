@@ -5,7 +5,7 @@ from app.database.connection import get_db_connection
 from app.schemas.appointment import AppointmentCreate
 from app.usecases.appointment import AppointmentUseCases
 
-router = APIRouter(prefix="/appointments")
+router = APIRouter(tags=["Appointments"], prefix="/appointments")
 
 
 @router.get('')

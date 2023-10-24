@@ -6,7 +6,7 @@ from app.schemas.agenda import Agenda, AgendaDayHour
 from app.usecases.agenda import AgendaUseCases
 from app.usecases.agenda_day_hour import AgendaDayHourUseCases
 
-router = APIRouter(prefix="/agendas")
+router = APIRouter(tags=["Agenda"], prefix="/agendas")
 
 @router.post('')
 def create_agenda(

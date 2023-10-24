@@ -13,7 +13,7 @@ start_db()
 async def get_health_status():
     return {"mindmeet": "online"}
 
-app.include_router(users_router)
+# app.include_router(users_router)
 app.include_router(agenda_router)
 app.include_router(appointments_router)
 app.include_router(requests_appointment_router)
