@@ -1,6 +1,6 @@
 from psycopg import Connection
 
-from app.schemas.agenda import Agenda, AgendaDayHour, AgendaOutput
+from app.schemas.agenda import Agenda, AgendaOutput
 
 CREATE_AGENDA_SQL = "INSERT INTO agenda DEFAULT VALUES"
 SELECT_ALL_AGENDAS_SQL = "SELECT * FROM agenda"
@@ -30,18 +30,3 @@ class AgendaUseCases:
         self.cursor.execute(SELECT_ALL_AGENDAS_SQL)
         agendas = self.cursor.fetchall()
         return [AgendaOutput(id=agenda[0], start_datetime=agenda[1], end_datetime=agenda[2]) for agenda in agendas]
-    
-    # TODO: improve this
-    # maybe this is not to better place to put these methods
-    def create_agenda_day_hour(self, agenda_id: int, start_date_time: str, end_date_time: str) -> None:
-        self.cursor.execute(CREATE_AGENDA_DAY_HOUR_SQL, {"agenda_id": agenda_id, "start_date_time": start_date_time, "end_date_time": end_date_time})
-        self.db_connection.commit()
-
-    def update_agenda_day_hour(self, id: int, start_date_time: str, end_date_time: str) -> None:
-        self.cursor.execute(UPDATE_AGENDA_DAY_HOUR_SQL, {"id": id, "start_date_time": start_date_time, "end_date_time": end_date_time})
-        self.db_connection.commit()
-
-    def get_all_agendas_day_hour(self) -> list[Agenda]:
-        self.cursor.execute(SELECT_ALL_AGENDAS_DAY_HOUR_SQL)
-        agendas_day_hour = self.cursor.fetchall()
-        return [AgendaDayHour(id=agenda_day_hour[0], start_datetime=agenda_day_hour[1], end_datetime=agenda_day_hour[2]) for agenda_day_hour in agendas_day_hour]
