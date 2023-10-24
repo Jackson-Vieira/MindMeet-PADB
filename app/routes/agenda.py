@@ -36,15 +36,15 @@ def list_all_agendas_day_hour(
     db_connection: Connection = Depends(get_db_connection)
 ):
     uc = AgendaDayHourUseCases(db_connection)
-    agendas_day_hour = uc.get_all_agendas_day_hour_by_id(agenda_id)
+    agendas_day_hour = uc.get_all_agendas_day_hour_by_agenda_id(agenda_id)
     return agendas_day_hour
 
 @router.post('/{agenda_id}/day-hour')
 def create_agenda_day_hour(
-    agenda_day_hour: AgendaDayHour,
     agenda_id: int,
+    agenda_day_hour: AgendaDayHour,
     db_connection: Connection = Depends(get_db_connection)
 ):
-    uc = AgendaUseCases(db_connection)
+    uc = AgendaDayHourUseCases(db_connection)
     uc.create_agenda_day_hour(agenda_id, agenda_day_hour)
     return Response(status_code=status.HTTP_201_CREATED)

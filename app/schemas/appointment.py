@@ -33,4 +33,11 @@ class AppointmentRequest(BaseModel):
     agenda_day_hour_id: int
     reason: str
     status: bool
-    anonymous: bool
+
+class AppointmentRequestCreate(AppointmentRequest):
+    pass
+
+class AppointmentRequestOutput(AppointmentRequest):
+    id: str
+    created_at: str
+    updated_at: str
