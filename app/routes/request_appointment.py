@@ -18,7 +18,6 @@ def list_all(
     return appointments
 
 @router.post('')
-@router.get('')
 def create_request_appointment(
     request_appointment: AppointmentRequestCreate,
     db_connection: Connection = Depends(get_db_connection)
