@@ -88,6 +88,7 @@ class MainMenu(MenuFactory):
             return None
 
 def main(): 
+    # TODO: tree menu effect
     menu = MainMenu()
     option = 0
     while option != 5:
