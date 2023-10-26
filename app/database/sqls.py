@@ -1,41 +1,26 @@
 CREATE_TABLE_USERS = """
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
-    username VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL,
-    password VARCHAR(100) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    full_name VARCHAR(100) NOT NULL,
+    city VARCHAR(50) NOT NULL,
+    data_joined TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 """
-
-# CREATE_TABLE_PATIENT = """
-# CREATE TABLE IF NOT EXISTS patient (
-#     id SERIAL PRIMARY KEY
-# )
-# """
-
-# CREATE_TABLE_PSYCHOLOGIST = """
-# CREATE TABLE IF NOT EXISTS psychologist (
-#     id SERIAL PRIMARY KEY,
-#     email VARCHAR(100) NOT NULL,
-#     full_name VARCHAR(100) NOT NULL,
-#     city VARCHAR(50) NOT NULL,
-#     is_staff BIT NOT NULL,
-#     is_superuser BIT NOT NULL,
-#     is_active BIT NOT NULL,
-#     data_joined TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-# )
-# """
 
 CREATE_TABLE_REQUESTS_APPOINTMENTS = """
 CREATE TABLE IF NOT EXISTS requests_appointments (
     id SERIAL PRIMARY KEY,
+    psychologist_id INTERGER NOT NULL,
+    patient_id INTERGER NOT NULL,
     agenda_day_hour_id INTEGER NOT NULL,
     status VARCHAR(50) NOT NULL,
     reason VARCHAR(50) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (agenda_day_hour_id) REFERENCES agenda_day_hour (id)
+    FOREIGN KEY (psychologist_id) REFERENCES users (id)
+    FOREIGN KEY (patient_id) REFERENCES users (id)
 )
 """
 
@@ -43,20 +28,26 @@ CREATE_TABLE_APPOINTMENTS = """
 CREATE TABLE IF NOT EXISTS appointments (
     id SERIAL PRIMARY KEY,
     agenda_day_hour_id INTEGER NOT NULL,
+    psychologist_id INTERGER NOT NULL,
+    patient_id INTERGER NOT NULL,
     status VARCHAR(50) NOT NULL,
     reason VARCHAR(50) NOT NULL,
     anonymous BIT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (agenda_day_hour_id) REFERENCES agenda_day_hour (id)
+    FOREIGN KEY (psychologist_id) REFERENCES users (id)
+    FOREIGN KEY (patient_id) REFERENCES users (id)
 )
 """
 
 CREATE_AGENDA_TABLE = """
 CREATE TABLE IF NOT EXISTS agenda (
     id SERIAL PRIMARY KEY,
+    psychologist_id INTERGER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    FOREIGN KEY (psychologist_id) REFERENCES users (id)
 )
 """
 
