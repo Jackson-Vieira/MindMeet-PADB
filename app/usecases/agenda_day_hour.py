@@ -9,21 +9,18 @@ UPDATE_AGENDA_DAY_HOUR_SQL = "UPDATE agenda_day_hour SET start_date_time = %(sta
 class AgendaDayHourUseCases(BaseUseCase):
     def create_agenda_day_hour(self, agenda_id, agenda_day_hour:AgendaDayHour) -> None:
         with self.db_connection.cursor() as cursor:
-
-            data = agenda_day_hour.model_dump()
-            data["agenda_id"] = agenda_id
-
-            print("---data", data)
-            
-            cursor.execute(CREATE_AGENDA_DAY_HOUR_SQL, data)
+            cursor.execute(CREATE_AGENDA_DAY_HOUR_SQL, {
+                "id": agenda_id, 
+                **agenda_day_hour.model_dump()
+            })
             self.db_connection.commit()
 
-    def update_agenda_day_hour(self, id: int, start_date_time: str, end_date_time: str) -> None:
+    def update_agenda_day_hour(self, id: int, agenda_day_hour: AgendaDayHour) -> None:
         with self.db_connection.cursor() as cursor:
-            cursor.execute(UPDATE_AGENDA_DAY_HOUR_SQL, {"id": id, "start_date_time": start_date_time, "end_date_time": end_date_time})
+            cursor.execute(UPDATE_AGENDA_DAY_HOUR_SQL, {"id": id, **agenda_day_hour.model_dump()})
             self.db_connection.commit()
 
-    def get_all_agendas_day_hour_by_agenda_id(self, agenda_id) -> list[AgendaDayHour]:
+    def filter_agendas_day_hour_by_agenda_id(self, agenda_id) -> list[AgendaDayHour]:
         with self.db_connection.cursor() as cursor:
             cursor.execute(SELECT_ALL_AGENDAS_DAY_HOUR_SQL, {"agenda_id": agenda_id})
             agendas_day_hour = cursor.fetchall()
