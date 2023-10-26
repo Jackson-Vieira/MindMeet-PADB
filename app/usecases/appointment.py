@@ -1,10 +1,12 @@
 # from datetime import datetime
+from datetime import datetime
+
 from app.schemas.appointment import AppointmentCreate, AppointmentOutput
 
 from .base import BaseUseCase
 
 CREATE_APPOINTMENT_SQL = "INSERT INTO appointments (status, reason, anonymous, agenda_day_hour_id, psychologist_id, patient_id) VALUES (%(status)s, %(reason)s, %(anonymous)s, %(agenda_day_hour_id)s)"
-UPDATE_APPOINTMENT_SQL = "UPDATE appointments SET status = %(status)s, reason = %(reason)s, anonymous = %(anonymous)s, agenda_day_hour_id = %(agenda_day_hour_id)s WHERE id = %(id)s"
+UPDATE_APPOINTMENT_SQL = "UPDATE appointments SET status = %(status)s, reason = %(reason)s, anonymous = %(anonymous)s, agenda_day_hour_id = %(agenda_day_hour_id)s, updated_at = %(updated_at)s WHERE id = %(id)s"
 SELECT_ALL_APPOINTMENTS_SQL = "SELECT id, agenda_day_hour_id, status, reason, anonymous, created_at, updated_at, psychologist_id, patient_id FROM appointments"
 SELECT_APPOINTMENT_SQL = "SELECT id, agenda_day_hour, status, reason, anonymous, created_at, updated_at, psychologist_id, patient_id FROM appointments WHERE id = %(id)s"
 DELETE_APPOINTMENT_SQL = "DELETE FROM appointments WHERE id = %(id)s"
@@ -56,5 +58,8 @@ class AppointmentUseCases(BaseUseCase):
     def update_appointment(self, appointment: AppointmentCreate) -> None:
         # appointment.updated_at = datetime.now() # maybe this is not the best way to do it
         with self._get_cursor() as cursor:
-            cursor.execute(UPDATE_APPOINTMENT_SQL, appointment.model_dump())
+            cursor.execute(UPDATE_APPOINTMENT_SQL, {
+                **appointment.model_dump(),
+                "updated_at": datetime.now()
+            })
             self.db_connection.commit()
