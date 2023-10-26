@@ -2,7 +2,7 @@ from app.schemas.agenda import Agenda, AgendaOutput
 
 from .base import BaseUseCase
 
-CREATE_AGENDA_SQL = "INSERT INTO agenda (psychologist_id) VALUES (%(psychologist_id)s"
+CREATE_AGENDA_SQL = "INSERT INTO agenda (psychologist_id) VALUES (%(psychologist_id)s)"
 SELECT_ALL_AGENDAS_SQL = "SELECT * FROM agenda"
 DELETE_AGENDA_SQL = "DELETE FROM agenda WHERE id = %(id)s"
 SELECT_AGENDA_SQL = "SELECT id, psychologist_id, created_at, updated_at FROM agenda WHERE id = %(id)s"

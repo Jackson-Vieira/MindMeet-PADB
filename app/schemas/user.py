@@ -9,7 +9,7 @@ class UserBase(BaseModel):
     city: str
 
 class User(UserBase):
-    id: str
+    id: int
     data_joined: datetime.datetime
 
 class UserCreate(UserBase):

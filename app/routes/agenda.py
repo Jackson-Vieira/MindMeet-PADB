@@ -12,10 +12,11 @@ router = APIRouter(tags=["Agenda"], prefix="/agendas")
 
 @router.post('')
 def create_agenda(
+    agenda: Agenda,
     db_connection: Connection = Depends(get_db_connection)
 ):
     uc = AgendaUseCases(db_connection)
-    uc.create_agenda(agenda=Agenda())
+    uc.create_agenda(agenda)
     return Response(status_code=status.HTTP_201_CREATED)
 
 @router.get('')

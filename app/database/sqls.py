@@ -12,16 +12,16 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE_TABLE_REQUESTS_APPOINTMENTS = """
 CREATE TABLE IF NOT EXISTS requests_appointments (
     id SERIAL PRIMARY KEY,
-    psychologist_id INTERGER NOT NULL,
-    patient_id INTERGER NOT NULL,
+    psychologist_id INTEGER NOT NULL,
+    patient_id INTEGER NOT NULL,
     agenda_day_hour_id INTEGER NOT NULL,
     status VARCHAR(50) NOT NULL,
     reason VARCHAR(50) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (agenda_day_hour_id) REFERENCES agenda_day_hour (id)
-    FOREIGN KEY (psychologist_id) REFERENCES users (id) ON DELETE PROTECT
-    FOREIGN KEY (patient_id) REFERENCES users (id) ON DELETE PROTECT
+    FOREIGN KEY (agenda_day_hour_id) REFERENCES agenda_day_hour (id),
+    FOREIGN KEY (psychologist_id) REFERENCES users (id),
+    FOREIGN KEY (patient_id) REFERENCES users (id)
 )
 """
 
@@ -29,25 +29,25 @@ CREATE_TABLE_APPOINTMENTS = """
 CREATE TABLE IF NOT EXISTS appointments (
     id SERIAL PRIMARY KEY,
     agenda_day_hour_id INTEGER NOT NULL,
-    psychologist_id INTERGER NOT NULL,
-    patient_id INTERGER NOT NULL,
+    psychologist_id INTEGER NOT NULL,
+    patient_id INTEGER NOT NULL,
     status VARCHAR(50) NOT NULL,
     reason VARCHAR(50) NOT NULL,
     anonymous BIT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (agenda_day_hour_id) REFERENCES agenda_day_hour (id)
-    FOREIGN KEY (psychologist_id) REFERENCES users (id) ON DELETE PROTECT
-    FOREIGN KEY (patient_id) REFERENCES users (id) ON DELETE PROTECT
+    FOREIGN KEY (agenda_day_hour_id) REFERENCES agenda_day_hour (id),
+    FOREIGN KEY (psychologist_id) REFERENCES users (id),
+    FOREIGN KEY (patient_id) REFERENCES users (id)
 )
 """
 
 CREATE_AGENDA_TABLE = """
 CREATE TABLE IF NOT EXISTS agenda (
     id SERIAL PRIMARY KEY,
-    psychologist_id INTERGER NOT NULL,
+    psychologist_id INTEGER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (psychologist_id) REFERENCES users (id) ON DELETE CASCADE
 )
 """

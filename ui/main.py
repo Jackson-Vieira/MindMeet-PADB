@@ -24,13 +24,19 @@ class ClientHTTP:
 
 client = ClientHTTP(API_URL)
 
-def get_option_input(msg):
-    result = int(input(msg))
-    while result not in [1, 2, 3]:
-        result = int(input(msg))
-    return result
+# def get_option_input(msg):
+#     result = int(input(msg))
+#     while result not in [1, 2, 3]:
+#         result = int(input(msg))
+#     return result
 
+
+# TODO: http_client 
+# TODO: improve menu options
 class MenuFactory(ABC):
+
+    def __init__(self) -> None:
+        super().__init__()
 
     @abstractmethod
     def print_menu(self):
@@ -41,6 +47,10 @@ class MenuFactory(ABC):
         pass
 
 class AgendaMenu(MenuFactory):
+    def __init__(self, http_client: ClientHTTP) -> None:
+        self.http_client = http_client
+        self.allowed_options = [1, 2, 3, 4]
+
     def print_menu(self):
         print("\n-------- Agenda Operacoes -------")
         print("1 - Listar agendas")
@@ -61,7 +71,8 @@ class AgendaMenu(MenuFactory):
             return None
 
     def _list_agendas(self):
-        print("Listando agendas...")
+        response = self.http_client.get("/agendas")
+        print(response.json())
 
     def _get_agenda_by_id(self):
         print("Agenda por id...")
@@ -71,32 +82,46 @@ class AgendaMenu(MenuFactory):
 
     def _delete_agenda(self):
         print("Deletando agenda...")
-
-# print("2 - Operações com Day Hour")
-# print("3 - Operações com Appointment")
-# print("4 - Operações com User")
+    
 class MainMenu(MenuFactory):
+    def __init__(self, http_client: ClientHTTP) -> None:
+        self.http_client = http_client
+        self.allowed_options = [1, 2]
+
     def print_menu(self):
-        print("-------- O que você deseja fazer? -------")
-        print("1 - Operações com Agenda")
-        print("5 - Sair")
+        print("\n├── O que você deseja fazer?")
+        print("├ 1 - Operações com Agenda")
+        print("├ 2 - Sair")
     
     def get_result(self, option):
         if option == 1:
-            return AgendaMenu()
-        elif option == 5:
+            return AgendaMenu(self.http_client)
+        elif option == 2:
             return None
+
+# TODO: validate only numbers
+def option_input(msg) -> int:
+    result = int(input(msg))
+    while not result:
+        result = int(input(msg))
+    return result
 
 def main(): 
     # TODO: tree menu effect
-    menu = MainMenu()
+    http_client = ClientHTTP(API_URL)
+    menu = MainMenu(http_client)
     option = 0
     while option != 5:
         menu.print_menu()
-        option = get_option_input("Digite a opção: ")
+        option = option_input("├── Digite a opção: ")
         menu_option = menu.get_result(option)
+
+        # stop loop
+        if not menu_option:
+            break
+
         menu_option.print_menu()
-        option = get_option_input("Digite a opção: ")
+        option = option_input("├── Digite a opção: ")
         menu_option.get_result(option)
 
 if __name__ == "__main__":
