@@ -1,10 +1,8 @@
-from fastapi import APIRouter, Depends, status
-from fastapi.encoders import jsonable_encoder
-from fastapi.responses import JSONResponse
+from fastapi import APIRouter, Depends
 from psycopg import Connection
 
 from app.database.connection import get_db_connection
-from app.usecases.users import UserUseCases
+from app.usecases.user import UserUseCases
 
 router = APIRouter(prefix='/users')
 
@@ -15,5 +13,4 @@ def get_users(
 ):
     uc = UserUseCases(db_connection=db_connection)
     users = uc.get_all_users()
-    print(users)
-    return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(users))
+    return users

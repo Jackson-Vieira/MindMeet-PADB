@@ -8,7 +8,7 @@ SELECT_ALL_USERS_SQL = "SELECT id, email, password_hash, full_name, city, data_j
 SELECT_USER_SQL = "SELECT id, email, password_hash, full_name, city, data_joined FROM users WHERE id = %(id)s"
 UPDATE_USER_SQL = "UPDATE users SET name = %(name)s, email = %(email)s, password_hash = %(password_hash)s, city = %(city)s WHERE id = %(id)s"
 
-class AgendaUseCases(BaseUseCase):
+class UserUseCases(BaseUseCase):
     def create_user(self, user: UserCreate) -> None:
         user.password_hash = self._hash_password(user.password_hash)
         with self.db_connection.cursor() as cursor:
