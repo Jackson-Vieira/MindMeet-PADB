@@ -1,3 +1,4 @@
+import json
 from abc import ABC, abstractmethod
 
 import requests
@@ -7,16 +8,17 @@ API_URL = config('API_URL')
 
 class ClientHTTP:
     def __init__(self, api_url):
+        self.headers = {'Content-type': 'application/json'}
         self.url = api_url
 
     def get(self, path):
         return requests.get(self.url + path)
 
     def post(self, path, data):
-        return requests.post(self.url + path, data=data)
+        return requests.post(self.url + path, data=data, headers=self.headers)
 
     def put(self, path, data):
-        return requests.put(self.url + path, data=data)
+        return requests.put(self.url + path, data=data, headers=self.headers)
 
     def delete(self, path):
         return requests.delete(self.url + path)
@@ -75,13 +77,32 @@ class AgendaMenu(MenuFactory):
         print(response.json())
 
     def _get_agenda_by_id(self):
-        print("Agenda por id...")
+        agenda_id = int(input("Agenda ID: "))
+        response = self.http_client.get(f'/agendas/{agenda_id}')
+        if response.status_code == 404:
+            print("Nao foi possivel encontrar a agenda!")
+            return None
+        print(response.json())
 
+    # TODO: fix this method
     def _create_agenda(self):
-        print("Criando agenda...")
+        user_id = int(input("User ID: "))
+        data = json.dumps({
+            "psychologist_id": user_id
+        })
+        response = self.http_client.post('/agendas', data)
+        if response.status_code == 201:
+            print("Agenda criada com sucesso") 
 
     def _delete_agenda(self):
-        print("Deletando agenda...")
+        agenda_id = int(input("Agenda ID: "))
+        response = self.http_client.delete(f'/agendas/{agenda_id}')
+        if response.status_code == 204:
+            print("Agenda deletada com sucesso!")
+            return
+        if response.status_code == 404:
+            print("Nao foi possivel encontrar a agenda!")
+            return 
     
 class MainMenu(MenuFactory):
     def __init__(self, http_client: ClientHTTP) -> None:
