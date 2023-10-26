@@ -20,8 +20,8 @@ CREATE TABLE IF NOT EXISTS requests_appointments (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (agenda_day_hour_id) REFERENCES agenda_day_hour (id)
-    FOREIGN KEY (psychologist_id) REFERENCES users (id)
-    FOREIGN KEY (patient_id) REFERENCES users (id)
+    FOREIGN KEY (psychologist_id) REFERENCES users (id) ON DELETE PROTECT
+    FOREIGN KEY (patient_id) REFERENCES users (id) ON DELETE PROTECT
 )
 """
 
@@ -37,8 +37,8 @@ CREATE TABLE IF NOT EXISTS appointments (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (agenda_day_hour_id) REFERENCES agenda_day_hour (id)
-    FOREIGN KEY (psychologist_id) REFERENCES users (id)
-    FOREIGN KEY (patient_id) REFERENCES users (id)
+    FOREIGN KEY (psychologist_id) REFERENCES users (id) ON DELETE PROTECT
+    FOREIGN KEY (patient_id) REFERENCES users (id) ON DELETE PROTECT
 )
 """
 
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS agenda (
     psychologist_id INTERGER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    FOREIGN KEY (psychologist_id) REFERENCES users (id)
+    FOREIGN KEY (psychologist_id) REFERENCES users (id) ON DELETE CASCADE
 )
 """
 
@@ -58,6 +58,6 @@ CREATE TABLE IF NOT EXISTS agenda_day_hour (
     agenda_id INTEGER NOT NULL,
     start_date_time TIMESTAMP NOT NULL,
     end_date_time TIMESTAMP NOT NULL,
-    FOREIGN KEY (agenda_id) REFERENCES agenda (id)
+    FOREIGN KEY (agenda_id) REFERENCES agenda (id) ON DELETE CASCADE
 )
 """

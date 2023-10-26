@@ -5,9 +5,9 @@ from app.schemas.appointment import (
 
 from .base import BaseUseCase
 
-CREATE_REQUEST_APPOINTMENT_SQL = "INSERT INTO requests_appointments (agenda_day_hour_id, status, reason) VALUES (%(agenda_day_hour_id)s, %(status)s, %(reason)s)"
+CREATE_REQUEST_APPOINTMENT_SQL = "INSERT INTO requests_appointments (agenda_day_hour_id, status, reason, psychologist_id, patient_id) VALUES (%(agenda_day_hour_id)s, %(status)s, %(reason)s, %(psychologist_id)s, %(patient_id)s)"
+SELECT_ALL_REQUESTS_APPOINTMENTS_SQL = "SELECT id, agenda_day_hour_id, status, reason, created_at, updated_at, psychologist_id, patient_id FROM requests_appointments"
 DELETE_REQUEST_APPOINTMENT_SQL = "DELETE FROM requests_appointments WHERE id = %(id)s"
-SELECT_ALL_REQUESTS_APPOINTMENTS_SQL = "SELECT id, agenda_day_hour_id, status, reason, created_at, updated_at FROM requests_appointments"
 
 class RequestAppointmentUseCases(BaseUseCase):
     def get_all_requests_appointments(self) -> list[AppointmentRequestOutput]:
@@ -20,7 +20,10 @@ class RequestAppointmentUseCases(BaseUseCase):
                 status=request_appointment[2],
                 reason=request_appointment[3],
                 created_at=request_appointment[4],
-                updated_at=request_appointment[5])
+                updated_at=request_appointment[5],
+                psychologist_id=request_appointment[6],
+                patient_id=request_appointment[7]
+            )
             for request_appointment in requests_appointments]
     
     def create_request_appointment(self, appoiment_request: AppointmentRequestCreate) -> None:

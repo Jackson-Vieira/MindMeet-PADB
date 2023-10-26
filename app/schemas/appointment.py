@@ -16,29 +16,29 @@ from pydantic import BaseModel
 class Appointment(BaseModel):
     status: bool
     reason: str
-    anonymous: bool
     psychologist_id: int
     patient_id: int
 
 class AppointmentCreate(Appointment):
     agenda_day_hour_id: int
-    updated_at: str | None = None
 
 class AppointmentOutput(Appointment):
     id: int
     agenda_day_hour_id: int
-    created_at: str
-    updated_at: str
+    created_at: datetime.datetime
+    updated_at: datetime.datetime
 
-class AppointmentRequest(BaseModel):
-    agenda_day_hour_id: int
-    reason: str
+class AppointmentRequestBase(BaseModel):
     status: bool
+    reason: str
+    psychologist_id: int
+    patient_id: int
+    agenda_day_hour_id: int
 
-class AppointmentRequestCreate(AppointmentRequest):
+class AppointmentRequestCreate(AppointmentRequestBase):
     pass
 
-class AppointmentRequestOutput(AppointmentRequest):
+class AppointmentRequestOutput(AppointmentRequestBase):
     id: int
     created_at: datetime.datetime
     updated_at: datetime.datetime

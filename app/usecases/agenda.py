@@ -24,3 +24,8 @@ class AgendaUseCases(BaseUseCase):
             cursor.execute(SELECT_ALL_AGENDAS_SQL)
             agendas = cursor.fetchall()
             return [AgendaOutput(id=agenda[0], psychologist_id=agenda[1], created_at=agenda[2], updated_at=agenda[3]) for agenda in agendas]
+    
+    def delete_agenda(self, id: int) -> None:
+        with self.db_connection.cursor() as cursor:
+            cursor.execute(DELETE_AGENDA_SQL, {"id": id})
+            self.db_connection.commit()
