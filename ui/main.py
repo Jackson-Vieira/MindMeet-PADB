@@ -74,7 +74,13 @@ class AgendaMenu(MenuFactory):
 
     def _list_agendas(self):
         response = self.http_client.get("/agendas")
-        print(response.json())
+        data = response.json()
+        keys = " | ".join(data[0].keys())
+        print(keys)
+        for i in range(len(data)):
+            value = [str(item) for item in data[i].values()]
+            print(" | ".join(value))
+        
 
     def _get_agenda_by_id(self):
         agenda_id = int(input("Agenda ID: "))
