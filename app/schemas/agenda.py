@@ -4,7 +4,8 @@ from pydantic import BaseModel
 
 
 class Agenda(BaseModel):
-    pass
+    psychologist_id: int
+
 class AgendaOutput(Agenda):
     id: int
     start_datetime: datetime.datetime

@@ -1,5 +1,6 @@
-from pydantic import BaseModel
 import datetime
+
+from pydantic import BaseModel
 
 """
 # id SERIAL PRIMARY KEY,
@@ -16,19 +17,18 @@ class Appointment(BaseModel):
     status: bool
     reason: str
     anonymous: bool
+    psychologist_id: int
+    patient_id: int
 
 class AppointmentCreate(Appointment):
     agenda_day_hour_id: int
     updated_at: str | None = None
-    # patient_id: int
 
 class AppointmentOutput(Appointment):
     id: int
     agenda_day_hour_id: int
     created_at: str
     updated_at: str
-    # psychologist_id: int
-    # patient_id: int
 
 class AppointmentRequest(BaseModel):
     agenda_day_hour_id: int
