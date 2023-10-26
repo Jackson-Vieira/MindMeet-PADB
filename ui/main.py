@@ -90,7 +90,6 @@ class AgendaMenu(MenuFactory):
             return None
         print(response.json())
 
-    # TODO: fix this method
     def _create_agenda(self):
         user_id = int(input("User ID: "))
         data = json.dumps({
@@ -126,12 +125,12 @@ class MainMenu(MenuFactory):
         elif option == 2:
             return None
 
-# TODO: validate only numbers
 def option_input(msg) -> int:
-    result = int(input(msg))
-    while not result:
+    try:
         result = int(input(msg))
-    return result
+        return result
+    except ValueError:
+        return option_input(msg)
 
 def main(): 
     # TODO: tree menu effect
