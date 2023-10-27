@@ -13,7 +13,6 @@ class User(BaseModel):
     id: int
     username: str
     email: str
-    city: str
     password: str
     created_at: datetime.datetime
 
