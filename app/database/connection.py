@@ -1,4 +1,5 @@
 import psycopg
+
 from decouple import config
 
 from app.database.sqls import (

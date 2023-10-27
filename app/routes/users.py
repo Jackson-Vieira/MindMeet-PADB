@@ -1,10 +1,11 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from psycopg import Connection
 
 from app.database.connection import get_db_connection
 from app.usecases.users import UserUseCases
+from app.schemas.users import UserCreate
 
 router = APIRouter(prefix='/users')
 
@@ -17,3 +18,12 @@ def get_users(
     users = uc.get_all_users()
     print(users)
     return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(users))
+
+@router.post('')
+def create_user(
+    create_user: UserCreate,
+    db_connection: Connection = Depends(get_db_connection)
+):
+    uc = UserUseCases(db_connection)
+    uc.create_user(create_user)
+    return Response(status_code=status.HTTP_201_CREATED)
