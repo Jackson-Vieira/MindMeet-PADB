@@ -13,6 +13,7 @@ GET_USERS_SQL = "SELECT * FROM users"
 CREATE_USER_SQL = "INSERT INTO users (id, username, email, password, created_at) VALUES (%(id)s, %(username)s, %(email)s, %(password)s, %(created_at)s)"
 DELETE_USER_SQL = "DELETE FROM users WHERE id = %(id)s"
 GET_USER_ID_SQL = "SELECT (id, username, email, password, created_at) FROM users WHERE id = %(id)s"
+UPDATE_USER_SQL = "UPDATE users SET username = %(username)s, email = %(email)s, password = %(password)s, created_at = %(created_at)s WHERE id = %(id)s"
 
 
 class UserUseCases:
@@ -46,3 +47,9 @@ class UserUseCases:
         with self.db_connection.cursor() as cursor:
             cursor.execute(DELETE_USER_SQL, {"id": id})
             self.db_connection.commit()
+
+    def update_user(self,user_id: int, user: UserCreate) -> None:
+        with self.db_connection.cursor() as cursor:
+            cursor.execute(UPDATE_USER_SQL, user.model_dump())
+            self.db_connection.commit()
+        return User

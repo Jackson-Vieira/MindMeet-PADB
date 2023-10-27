@@ -47,4 +47,13 @@ def delete_user(
     uc = UserUseCases(db_connection)
     uc.delete_user_id(user_id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
-    
+
+@router.put('/{user_id}')
+def update_user(
+    user_id: int,
+    user: UserCreate,
+    db_connection: Connection = Depends(get_db_connection)
+):
+    uc = UserUseCases(db_connection)
+    uc.update_user(user_id, user)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
