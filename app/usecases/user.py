@@ -1,5 +1,5 @@
 from app.schemas.user import User, UserCreate
-
+from fastapi import HTTPException, status
 from .base import BaseUseCase
 
 CREATE_USER_SQL = "INSERT INTO users (email, password_hash, full_name, city) VALUES (%(email)s, %(password_hash)s, %(full_name)s, %(city)s)"
@@ -19,7 +19,9 @@ class UserUseCases(BaseUseCase):
         with self.db_connection.cursor() as cursor:
             cursor.execute(SELECT_USER_SQL, {"id": id})
             user = cursor.fetchone()
-            return User(id=user[0], email=user[1], password_hash=user[2], full_name=user[3], city=user[4], data_joined=user[5])
+            if user:
+                return User(id=user[0], email=user[1], password_hash=user[2], full_name=user[3], city=user[4], data_joined=user[5])
+            return HTTPException(status_code=status.HTTP_404_NOT_FOUND, )
     
     def get_all_users(self) -> list[User]:
         with self.db_connection.cursor() as cursor:

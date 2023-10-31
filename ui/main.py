@@ -1,6 +1,5 @@
 import json
 from abc import ABC, abstractmethod
-
 import requests
 from decouple import config
 
@@ -75,23 +74,31 @@ class AgendaMenu(MenuFactory):
     def _list_agendas(self):
         response = self.http_client.get("/agendas")
         data = response.json()
-        keys = " | ".join(data[0].keys())
-        print(keys)
-        for i in range(len(data)):
-            value = [str(item) for item in data[i].values()]
-            print(" | ".join(value))
+        if data:
+            keys = " | ".join(data[0].keys())
+            print(keys)
+            for i in range(len(data)):
+                value = [str(item) for item in data[i].values()]
+                print(" | ".join(value))
+            return
+        print("Nenhuma agenda encontrada!")
         
-
     def _get_agenda_by_id(self):
         agenda_id = int(input("Agenda ID: "))
         response = self.http_client.get(f'/agendas/{agenda_id}')
-        if response.status_code == 404:
-            print("Nao foi possivel encontrar a agenda!")
+        if response.status_code != 200:
+            print("Esaa agenda não existe!")
             return None
-        print(response.json())
+        data = response.json()
+        for key, value in data.items():
+            print(f'{key}: {value}')
 
     def _create_agenda(self):
         user_id = int(input("User ID: "))
+        response_user = self.http_client.get(f'/users/{user_id}')
+        if response_user.status_code:
+            print('Psicologo não existe')
+            return
         data = json.dumps({
             "psychologist_id": user_id
         })
@@ -139,7 +146,7 @@ def main():
     option = 0
     while option != 5:
         menu.print_menu()
-        option = option_input("├── Digite a opção: ")
+        option = option_input("\n├── Digite a opção: ")
         menu_option = menu.get_result(option)
 
         # stop loop
@@ -147,7 +154,7 @@ def main():
             break
 
         menu_option.print_menu()
-        option = option_input("├── Digite a opção: ")
+        option = option_input("\n├── Digite a opção: ")
         menu_option.get_result(option)
 
 if __name__ == "__main__":

@@ -24,3 +24,12 @@ def create_user(
     uc = UserUseCases(db_connection=db_connection)
     uc.create_user(user)
     return Response(status_code=status.HTTP_201_CREATED)
+
+@router.get('/{user_id}')
+def get_user_id(
+    user_id: int,
+    db_connection: Connection = Depends(get_db_connection)
+):
+    uc = UserUseCases(db_connection)
+    user = uc.get_user_by_id(user_id)
+    return user
