@@ -27,7 +27,7 @@ erDiagram
         int id PK
         string psychologist_id FK
         string patient_id FK
-        string agenda_day_hour_id
+        string agenda_day_hour_id FK
         string status
         string reason
         boolean anonymous
@@ -39,7 +39,7 @@ erDiagram
         int id PK
         string psychologist_id FK
         string patient_id FK
-        int agenda_day_hour_id
+        int agenda_day_hour_id FK
         string status
         string reason
         datetime created_at
